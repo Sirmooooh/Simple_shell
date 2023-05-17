@@ -155,7 +155,7 @@ return (0);
  * Return: If an error occurs - -1.
  *         Otherwise - 0.
  */
-int shellby_help(char **args, char __attribute__((__unused__)) **speed)
+int shell_help(char **args, char __attribute__((__unused__)) **speed)
 {
 if (args[0] == NULL)
 help_all();
