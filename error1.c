@@ -5,7 +5,7 @@ char *error_exit(char **args);
 char *error_cd(char **args);
 char *error_syntax(char **args);
 /**
- * error_env - Creates an error message for shellby_env errors.
+ * error_env - Creates an error message for shell_env errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
@@ -35,7 +35,7 @@ free(hist_str);
 return (error);
 }
 /**
- * error_1 - Creates an error message for shellby_alias errors.
+ * error_1 - Creates an error message for shell_alias errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
@@ -54,7 +54,7 @@ _strcat(error, " not found\n");
 return (error);
 }
 /**
- * error_exit - Creates an error message for shellby_exit errors.
+ * error_exit - Creates an error message for shell_exit errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.
@@ -83,7 +83,7 @@ free(hist_str);
 return (error);
 }
 /**
- * error_cd - Creates an error message for shellby_cd errors.
+ * error_cd - Creates an error message for shell_cd errors.
  * @args: An array of arguments passed to the command.
  *
  * Return: The error string.

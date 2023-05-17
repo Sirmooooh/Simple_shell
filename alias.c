@@ -60,7 +60,6 @@ alias_t *tmp = aliases;
 int len, j, k;
 char *new_val;
 *val = '\0';
-OB
 val++;
 len = _strlen(val) - _strspn(val, "'\"");
 new_val = malloc(sizeof(char) * (len + 1));

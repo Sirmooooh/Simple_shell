@@ -30,7 +30,7 @@ write(STDOUT_FILENO, message, _strlen(message));
 void help_unsetenv(void)
 {
 char *message = "unsetenv: unsetenv [VARIABLE]\n\tRemoves an ";
-write(STDOUT_FILENO, message, _strlen(msg));
+write(STDOUT_FILENO, message, _strlen(message));
 message = "environmental variable.\n\n\tUpon failure, prints a ";
 write(STDOUT_FILENO, message, _strlen(message));
 message = "message to stderr.\n";
