@@ -16,29 +16,29 @@ int check_args(char **args);
  */
 char *get_args(char *line, int *exe_spe)
 {
-        size_t n = 0;
-        ssize_t read;
-        char *prompt = "$ ";
+	size_t n = 0;
+	ssize_t read;
+	char *prompt = "$ ";
 
-        if (line)
-                free(line);
+	if (line)
+		free(line);
 
-        read = _getline(&line, &n, STDIN_FILENO);
-        if (read == -1)
-                return (NULL);
-        if (read == 1)
-        {
-                hist++;
-                if (isatty(STDIN_FILENO))
-                        write(STDOUT_FILENO, prompt, 2);
-                return (get_args(line, exe_spe));
-        }
+	read = _getline(&line, &n, STDIN_FILENO);
+	if (read == -1)
+		return (NULL);
+	if (read == 1)
+	{
+		hist++;
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, prompt, 2);
+		return (get_args(line, exe_spe));
+	}
 
-        line[read - 1] = '\0';
-        var_replacement(&line, exe_spe);
-        handle_line(&line, read);
+	line[read - 1] = '\0';
+	var_replacement(&line, exe_spe);
+	handle_line(&line, read);
 
-        return (line);
+	return (line);
 }
 
 /**
@@ -51,52 +51,52 @@ char *get_args(char *line, int *exe_spe)
  */
 int call_args(char **args, char **speed, int *exe_spe)
 {
-        int spe, space;
+	int spe, space;
 
-        if (!args[0])
-                return (*exe_spe);
-        for (space = 0; args[space]; space++)
-        {
-                if (_strncmp(args[space], "||", 2) == 0)
-                {
-                        free(args[space]);
-                        args[space] = NULL;
-                        args = replace_aliases(args);
-                        spe = run_args(args, speed, exe_spe);
-                        if (*exe_spe != 0)
-                        {
-                                args = &args[++space];
-                                space = 0;
-                        }
-                        else
-                        {
-                                for (space++; args[space]; space++)
-                                        free(args[space]);
-                                return (spe);
-                        }
-                }
-                else if (_strncmp(args[space], "&&", 2) == 0)
-                {
-                        free(args[space]);
-                        args[space] = NULL;
-                        args = replace_aliases(args);
-                        spe = run_args(args, speed, exe_spe);
-                        if (*exe_spe == 0)
-                        {
-                                args = &args[++space];
-                                space = 0;
-                        }
-                        else
-                        {
-                                for (space++; args[space]; space++)
-                                        free(args[space]);
-                                return (spe);
-                        }
-                }
-        }
-        args = replace_aliases(args);
-        spe = run_args(args, speed, exe_spe);
-        return (spe);
+	if (!args[0])
+		return (*exe_spe);
+	for (space = 0; args[space]; space++)
+	{
+		if (_strncmp(args[space], "||", 2) == 0)
+		{
+			free(args[space]);
+			args[space] = NULL;
+			args = replace_aliases(args);
+			spe = run_args(args, speed, exe_spe);
+			if (*exe_spe != 0)
+			{
+				args = &args[++space];
+				space = 0;
+			}
+			else
+			{
+				for (space++; args[space]; space++)
+					free(args[space]);
+				return (spe);
+			}
+		}
+		else if (_strncmp(args[space], "&&", 2) == 0)
+		{
+			free(args[space]);
+			args[space] = NULL;
+			args = replace_aliases(args);
+			spe = run_args(args, speed, exe_spe);
+			if (*exe_spe == 0)
+			{
+				args = &args[++space];
+				space = 0;
+			}
+			else
+			{
+				for (space++; args[space]; space++)
+					free(args[space]);
+				return (spe);
+			}
+		}
+	}
+	args = replace_aliases(args);
+	spe = run_args(args, speed, exe_spe);
+	return (spe);
 }
 
 /**
@@ -109,29 +109,29 @@ int call_args(char **args, char **speed, int *exe_spe)
  */
 int run_args(char **args, char **speed, int *exe_spe)
 {
-        int spe, i;
-        int (*builtin)(char **args, char **speed);
+	int spe, i;
+	int (*builtin)(char **args, char **speed);
 
-        builtin = get_builtin(args[0]);
+	builtin = get_builtin(args[0]);
 
-        if (builtin)
-        {
-                spe = builtin(args + 1, speed);
-                if (spe != EXIT)
-                        *exe_spe = spe;
-        }
-        else
-        {
-                *exe_spe = execute(args, speed);
-                spe = *exe_spe;
-        }
+	if (builtin)
+	{
+		spe = builtin(args + 1, speed);
+		if (spe != EXIT)
+			*exe_spe = spe;
+	}
+	else
+	{
+		*exe_spe = execute(args, speed);
+		spe = *exe_spe;
+	}
 
-        hist++;
+	hist++;
 
-        for (i = 0; args[i]; i++)
-                free(args[i]);
+	for (i = 0; args[i]; i++)
+		free(args[i]);
 
-        return (spe);
+	return (spe);
 }
 
 /**
@@ -144,41 +144,41 @@ int run_args(char **args, char **speed, int *exe_spe)
  */
 int handle_args(int *exe_spe)
 {
-        int spe = 0, space;
-        char **args, *line = NULL, **speed;
+	int spe = 0, space;
+	char **args, *line = NULL, **speed;
 
-        line = get_args(line, exe_spe);
-        if (line == NULL)
-                return (END_OF_FILE);
+	line = get_args(line, exe_spe);
+	if (line == NULL)
+		return (END_OF_FILE);
 
-        args = _strtok(line, " ");
-        free(line);
-        if (args == NULL)
-                return (spe);
-        if (check_args(args) != 0)
-        {
-                *exe_spe = 2;
-                free_args(args, args);
-                return (*exe_spe);
-        }
-        speed = args;
+	args = _strtok(line, " ");
+	free(line);
+	if (args == NULL)
+		return (spe);
+	if (check_args(args) != 0)
+	{
+		*exe_spe = 2;
+		free_args(args, args);
+		return (*exe_spe);
+	}
+	speed = args;
 
-        for (space = 0; args[space]; space++)
-        {
-                if (_strncmp(args[space], ";", 1) == 0)
-                {
-                        free(args[space]);
-                        args[space] = NULL;
-                        spe = call_args(args, speed, exe_spe);
-                        args = &args[++space];
-                        space = 0;
-                }
-        }
-        if (args)
-                spe = call_args(args, speed, exe_spe);
+	for (space = 0; args[space]; space++)
+	{
+		if (_strncmp(args[space], ";", 1) == 0)
+		{
+			free(args[space]);
+			args[space] = NULL;
+			spe = call_args(args, speed, exe_spe);
+			args = &args[++space];
+			space = 0;
+		}
+	}
+	if (args)
+		spe = call_args(args, speed, exe_spe);
 
-        free(speed);
-        return (spe);
+	free(speed);
+	return (spe);
 }
 
 /**
@@ -190,20 +190,20 @@ int handle_args(int *exe_spe)
  */
 int check_args(char **args)
 {
-        size_t i;
-        char *c, *ex;
+	size_t i;
+	char *c, *ex;
 
-        for (i = 0; args[i]; i++)
-        {
-                c = args[i];
-                if (c[0] == ';' || c[0] == '&' || c[0] == '|')
-                {
-                        if (i == 0 || c[1] == ';')
-                                return (create_error(&args[i], 2));
-                        ex = args[i + 1];
-                        if (ex && (ex[0] == ';' || ex[0] == '&' || ex[0] == '|'))
-                                return (create_error(&args[i + 1], 2));
-                }
-        }
-        return (0);
+	for (i = 0; args[i]; i++)
+	{
+		c = args[i];
+		if (c[0] == ';' || c[0] == '&' || c[0] == '|')
+		{
+			if (i == 0 || c[1] == ';')
+				return (create_error(&args[i], 2));
+			ex = args[i + 1];
+			if (ex && (ex[0] == ';' || ex[0] == '&' || ex[0] == '|'))
+				return (create_error(&args[i + 1], 2));
+		}
+	}
+	return (0);
 }
