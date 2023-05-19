@@ -5,14 +5,14 @@ int shell_setenv(char **args, char __attribute__((__unused__)) **speed);
 int shell_unsetenv(char **args, char __attribute__((__unused__)) **speed);
 
 /**
- * shellby_env - Prints the current environment.
+ * shell_env - Prints the current environment.
  * @args: An array of arguments passed to the shell.
  * @speed: A double pointer to the beginning of args.
  *
  * Return: If an error occurs - -1.
  *         Otherwise - 0.
  *
- * A
+ *
  * Description: Prints one variable per line in the
  *              format 'variable'='value'.
  */
